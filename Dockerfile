@@ -1,5 +1,4 @@
 FROM ruby:2.7.6
-ENV GOSU_VERSION 1.13
 
 # adding GOSU
 RUN set -eux; \
