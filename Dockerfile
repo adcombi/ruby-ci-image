@@ -2,30 +2,12 @@ FROM ruby:2.7.6
 ENV GOSU_VERSION 1.13
 
 # adding GOSU
-RUN set -ex; \
-    \
-    apk add --no-cache --virtual .gosu-deps \
-        dpkg \
-        gnupg \
-        openssl \
-    ; \
-    \
-    dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-    wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-    wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
-    \
-# verify the signature
-    export GNUPGHOME="$(mktemp -d)"; \
-    gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
-    command -v gpgconf && gpgconf --kill all || :; \
-    rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
-    \
-    chmod +x /usr/local/bin/gosu; \
-# verify that the binary works
-    gosu nobody true; \
-    \
-    apk del .gosu-deps
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y gosu; \
+	rm -rf /var/lib/apt/lists/*; \
+  # verify that the binary works
+	gosu nobody true
 
 # adding JQ Node JS and Yarn
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
@@ -54,6 +36,6 @@ RUN apt-get update && apt-get install -y unzip && \
 # adding a low privilege user to the container
 RUN adduser app --disabled-password --gecos "" --home /opt/app
 
-# copy the entypoint file to the /user/local/bin directory
+# copy the entypoint file to the /usr/local/bin directory
 COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "entrypoint.sh" ]

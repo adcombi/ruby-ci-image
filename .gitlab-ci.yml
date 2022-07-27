@@ -1,0 +1,16 @@
+.build_setup:
+  stage: build
+  interruptible: true
+  allow_failure: false
+  when: on_success
+  tags:
+    - docker
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  only:
+    - master
+
+ruby-2.7.6:
+  extends: .build_setup
+  script:
+    - ./build_push.sh 2.7.6
