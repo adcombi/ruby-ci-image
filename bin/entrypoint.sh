@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
 
-rm -rf $CI_PROJECT_DIR/node_modules/
-chown -R app:app /builds/adcombi/
+chown -R app:app $CI_PROJECT_DIR
 exec gosu app "$@"
