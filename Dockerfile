@@ -1,4 +1,5 @@
-FROM ruby:2.7.6
+ARG ruby_version
+FROM ruby:${ruby_version}
 
 # adding GOSU
 RUN set -eux; \
