@@ -13,4 +13,6 @@
 ruby-2.7.6:
   extends: .build_setup
   script:
+    - pwd
+    - ls -lsa
     - ./build_push.sh 2.7.6
