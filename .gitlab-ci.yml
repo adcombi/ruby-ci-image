@@ -1,19 +1,15 @@
 .build_setup:
   stage: build
-  image: docker
-  variables:
-    DOCKER_TLS_CERTDIR: ''
-    DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://docker:2375/
+  image: docker:23.0.1
   services:
-    - docker:dind
+    - docker:23.0.1-dind
   interruptible: true
   allow_failure: false
   when: on_success
   tags:
     - docker
   before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   only:
     - main
 
