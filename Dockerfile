@@ -12,7 +12,7 @@ RUN set -eux; \
 # adding JQ Node JS and Yarn
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get update -qq && \
-    apt-get install -qq --no-install-recommends nodejs jq && \
+    apt-get install -qq --no-install-recommends nodejs jq libvips42 && \
     apt-get upgrade -qq && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
