@@ -28,3 +28,8 @@ ruby-3.2.2:
   extends: .build_setup
   script:
     - ./build_push.sh 3.2.2
+
+ruby-3.3.4:
+  extends: .build_setup
+  script:
+    - ./build_push.sh 3.2.2
