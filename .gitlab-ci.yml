@@ -1,15 +1,26 @@
+stages:
+  - build
+
 .build_setup:
   stage: build
   image: docker:23.0.1
   services:
-    - docker:23.0.1-dind
+    - name: docker:23.0.1-dind
+      command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   interruptible: true
   allow_failure: false
   when: on_success
   tags:
     - docker
   before_script:
-    echo $CI_GITHUB_TOKEN | docker login ghcr.io --username $CI_GITHUB_USER --password-stdin
+    - echo "$CI_GITHUB_TOKEN" | docker login ghcr.io -u "$CI_GITHUB_USER" --password-stdin
+    # Register QEMU + a buildx builder so build_push.sh can build linux/amd64 AND linux/arm64
+    - docker run --privileged --rm tonistiigi/binfmt --install arm64
+    - docker buildx create --use --name multiarch || docker buildx use multiarch
   only:
     - main
     - /^deploy-.*$/
@@ -32,4 +43,14 @@ ruby-3.2.2:
 ruby-3.3.4:
   extends: .build_setup
   script:
-    - ./build_push.sh 3.2.2
+    - ./build_push.sh 3.3.4
+
+ruby-3.4.5:
+  extends: .build_setup
+  script:
+    - ./build_push.sh 3.4.5
+
+ruby-3.4.10:
+  extends: .build_setup
+  script:
+    - ./build_push.sh 3.4.10
