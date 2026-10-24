@@ -34,8 +34,8 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: manaka
+          password: ${{ secrets.GHCR_TOKEN }}
       - uses: docker/build-push-action@v6
         with:
           context: .
