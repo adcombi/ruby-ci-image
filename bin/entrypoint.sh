@@ -1,5 +1,8 @@
 #!/bin/bash
 set -e
 
-chown -R :users $CI_PROJECT_DIR
+if [ -n "${CI_PROJECT_DIR:-}" ]; then
+  chown -R :users "$CI_PROJECT_DIR"
+fi
+
 exec gosu app "$@"
