@@ -1,4 +1,4 @@
-ARG ruby_version=3.4.12
+ARG ruby_version=3.4.13
 FROM ruby:${ruby_version}
 
 # Install common CI dependencies. Debian's Chromium and ChromeDriver packages

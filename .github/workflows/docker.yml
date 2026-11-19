@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ruby-3-4-12:
+  ruby-3-4-13:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -41,10 +41,10 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
-          build-args: ruby_version=3.4.12
+          build-args: ruby_version=3.4.13
           tags: |
-            ghcr.io/adcombi/ruby-ci-image:3.4.12
+            ghcr.io/adcombi/ruby-ci-image:3.4.13
             ghcr.io/adcombi/ruby-ci-image:3.4
-            ghcr.io/adcombi/ruby-ci-image:3.4.12-${{ github.sha }}
+            ghcr.io/adcombi/ruby-ci-image:3.4.13-${{ github.sha }}
           provenance: true
           sbom: true
